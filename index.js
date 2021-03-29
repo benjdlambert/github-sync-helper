@@ -13,20 +13,29 @@ const client = new Octokit({
 program
   .command("issues")
   .option("-d, --days <days>", "amount of days previous", 3)
-  .action(async ({ days }) => {
+  .option('--ignore-stale', 'ignore stale')
+  .action(async ({ days, ignoreStale }) => {
     const date = Luxon.DateTime.local();
     const since = date.minus({ days }).toISO();
 
-    const issues = await client.issues.listForRepo({
+    const issues = await client.paginate(client.issues.listForRepo, {
       owner: "spotify",
       repo: "backstage",
       since,
       per_page: 200,
     });
+  
+    const issuesToOpen = issues.filter((i) => {
+      if (ignoreStale) {
+        return !i.labels.some(l => l.name === 'stale')
+      }
+      return true;
+    })
 
-    const issueUrls = issues.data.map(({ html_url }) => html_url);
+    console.log(issuesToOpen[issuesToOpen.length - 1].labels);
+    const issueUrls = issuesToOpen.map(({ html_url }) => html_url);
 
-    issueUrls.forEach((u) => open(u));
+    // issueUrls.forEach((u) => open(u));
   });
 
 program.parse(process.argv);
