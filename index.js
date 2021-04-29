@@ -13,14 +13,20 @@ const client = new Octokit({
 program
   .command("issues")
   .option("-d, --days <days>", "amount of days previous", 3)
-  .action(async ({ days }) => {
-    const date = Luxon.DateTime.local();
-    const since = date.minus({ days }).toISO();
+  .option("-s, --since <20210429T14:00>", "")
+  .action(async ({ days, since }) => {
+    let timestamp;
+    if (since) {
+      timestamp = Luxon.DateTime.fromISO(since).toISO();
+    } else {
+      const date = Luxon.DateTime.local();
+      timestamp = date.minus({ days }).toISO();
+    }
 
     const issues = await client.paginate(client.issues.listForRepo, {
       owner: "backstage",
       repo: "backstage",
-      since,
+      since: timestamp,
       per_page: 100,
     });
 
