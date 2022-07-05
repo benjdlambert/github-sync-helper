@@ -32,9 +32,15 @@ program
       per_page: 100,
     });
 
-    const issueUrls = issues.map(({ html_url }) => html_url);
-
-    issueUrls.forEach((u) => open(u));
+    for (const issue of issues) {
+      if (issue.pull_request) {
+        if (issue.labels.find(({ name }) => name === 'needs discussion')) {
+          open(issue.html_url);
+        }
+      } else {
+        open(issue.html_url);
+      }
+    }
   });
 
 program.parse(process.argv);
