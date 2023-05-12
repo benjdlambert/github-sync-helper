@@ -1,10 +1,10 @@
 {
-  "name": "mammal-up",
+  "name": "github-sync-helper",
   "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "mammal-up": "./index.js"
+    "github-sync-helper": "./index.js"
   },
   "scripts": {
     "up": "./index.js",
