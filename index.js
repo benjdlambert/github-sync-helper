@@ -16,7 +16,7 @@ program
   .option('-s, --since <20210429T14:00>', '')
   .option('-l, --labels <comma separated list of labels>', '')
   .option('--include-prs', 'include pull requests', false)
-  .action(async ({ days, since, labels }) => {
+  .action(async ({ days, since, labels, includePrs }) => {
     let timestamp;
     if (since) {
       timestamp = Luxon.DateTime.fromISO(since).toISO();
@@ -37,7 +37,7 @@ program
       if (issue.pull_request) {
         if (
           issue.labels.find(
-            ({ name }) => name === 'needs discussion' || showPrs,
+            ({ name }) => name === 'needs discussion' || includePrs,
           )
         ) {
           open(issue.html_url);
