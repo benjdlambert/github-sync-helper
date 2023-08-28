@@ -15,6 +15,7 @@ program
   .option('-d, --days <days>', 'amount of days previous', 3)
   .option('-s, --since <20210429T14:00>', '')
   .option('-l, --labels <comma separated list of labels>', '')
+  .option('--include-prs', 'include pull requests', false)
   .action(async ({ days, since, labels }) => {
     let timestamp;
     if (since) {
@@ -34,7 +35,11 @@ program
 
     for (const issue of issues) {
       if (issue.pull_request) {
-        if (issue.labels.find(({ name }) => name === 'needs discussion')) {
+        if (
+          issue.labels.find(
+            ({ name }) => name === 'needs discussion' || showPrs,
+          )
+        ) {
           open(issue.html_url);
         }
       } else {
