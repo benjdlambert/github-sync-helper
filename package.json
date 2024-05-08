@@ -1,6 +1,6 @@
 {
   "name": "github-sync-helper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^18.0.6",
+    "chalk": "^4.1.2",
     "commander": "^6.1.0",
     "luxon": "^1.25.0",
     "octokit": "^1.0.0-hello-world",
