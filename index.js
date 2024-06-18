@@ -44,9 +44,8 @@ program
     for (const issue of issues) {
       if (issue.pull_request) {
         if (
-          issue.labels.find(
-            ({ name }) => name === 'needs discussion' || includePrs,
-          )
+          includePrs ||
+          issue.labels.some(({ name }) => name === 'needs discussion')
         ) {
           open(issue.html_url);
         }
